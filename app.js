@@ -16,7 +16,8 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
-const MongoStore = require('connect-mongo');
+//const MongoStore = require('connect-mongo');
+const MongoDBStore = require("connect-mongo")(session);
 
 // project files boilerplate
 const ExpressError = require('./utilities/ExpressError')
@@ -102,13 +103,18 @@ app.use(
 
 // session stuff
 const secret = process.env.SECRET || 'thisisasecret'
-const store = MongoStore.create({
+/* const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60, // in seconds
     crypto: {
         secret,
     }
-})
+}) */
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
 store.on('error', function (e) {
     console.log('session error', e)
 })
