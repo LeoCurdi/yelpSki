@@ -8,7 +8,8 @@ const {places, descriptors} = require('./seedHelpers')
 const campground = require('../models/campground');
 
 // connect mongoose. the link says which port and database to use. lets create and use a movies database
-mongoose.connect('mongodb://127.0.0.1:27017/yelpCamp'/* , {useNewUrlParser: true} */) // passing in options is no longer required
+const url = 'mongodb+srv://ldcurdi:ONK5YWUzaF3Nq79o@cluster1.egd6bay.mongodb.net/?retryWrites=true&w=majority'
+mongoose.connect(url/* 'mongodb://127.0.0.1:27017/yelpCamp' *//* , {useNewUrlParser: true} */) // passing in options is no longer required
 
 // mongoose connection logic
 const db = mongoose.connection;
@@ -29,7 +30,7 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000)
         const price = Math.floor(Math.random() * 30)
         const camp = new Campground({
-            author: '64bab6c77636a71f8a21bbba',
+            author: '64bb9b9b808789e740b6b914'/* '64bbacc4f5136f9d55c4a5d1' */, // first id is mongo atlas default user (un: leo, pw: 1), second is local default user (un: Leo, pw: Leo)
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             //location: `${skiResorts[i].name}, ${skiResorts[i].location}`,
             title: `${sample(descriptors)} ${sample(places)}`,
