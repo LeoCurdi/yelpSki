@@ -3,7 +3,11 @@
 const mongoose = require('mongoose')
 const Campground = require('../models/campground') // import the campground model
 const cities = require('./cities');
+
 const skiResorts = require('./skiResorts')
+const images = require('./imageUrls')
+const users = require('./users')
+
 const {places, descriptors} = require('./seedHelpers')
 const campground = require('../models/campground');
 
@@ -21,29 +25,57 @@ db.once("open", () => {
 // randomly generate an index in an array
 const sample = (array) => array[Math.floor(Math.random() * array.length)]
 
+// get an amount of random numbers in a range with no repeats
+const randomUnique = (range, count) => {
+    let nums = new Set();
+    while (nums.size < count) {
+        nums.add(Math.floor(Math.random() * range));
+    }
+    return [...nums];
+}
+
 const seedDB = async () => {
     // start by removing everything from the database
     await Campground.deleteMany({}) // delete all
 
     // randomly generate a bunch of campgrounds
-    for (let i = 0; i < 67; i++) {
-        const random1000 = Math.floor(Math.random() * 1000)
-        const price = Math.floor(Math.random() * 30)
+    for (let i = 0; i < 117; i++) {
+        //const random1000 = Math.floor(Math.random() * 1000)
+        //const price = Math.floor(Math.random() * 30)
+
+        // get random numbers
+        const rand0to9 = Math.floor(Math.random() * 10) // determine which userid to use
+        const rand2to6 = Math.floor(Math.random() * 5) + 2 // determine how many images to use
+        const imageIndexes = randomUnique(53, rand2to6) // get n images randomly without duplicates
+
+        // create images array
+        const imagesArray = []
+        for (var j = 0; j < rand2to6; j++) {
+            const img = {
+                url: images[imageIndexes[j]].url,
+                filename: images[imageIndexes[j]].filename
+            }
+            imagesArray.push(img)
+        }
+
+        // fill campground with all seed data
         const camp = new Campground({
-            author: '64bb9b9b808789e740b6b914'/* '64bbacc4f5136f9d55c4a5d1' */, // first id is mongo atlas default user (un: leo, pw: 1), second is local default user (un: Leo, pw: Leo)
-            location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            //location: `${skiResorts[i].name}, ${skiResorts[i].location}`,
-            title: `${sample(descriptors)} ${sample(places)}`,
+            //author: '64bb9b9b808789e740b6b914'/* '64bbacc4f5136f9d55c4a5d1' */, // first id is mongo atlas default user (un: leo, pw: 1), second is local default user (un: Leo, pw: Leo)
+            author: users[rand0to9].id,
+            //location: `${cities[random1000].city}, ${cities[random1000].state}`,
+            location: skiResorts[i].location,
+            //title: `${sample(descriptors)} ${sample(places)}`,
+            title: skiResorts[i].name,
             geometry: {
                 type: "Point",
                 coordinates: [
-                    cities[random1000].longitude,
-                    cities[random1000].latitude
-                    //skiResorts[i].longitude,
-                    //skiResorts[i].latitude
+                    //cities[random1000].longitude,
+                    //cities[random1000].latitude
+                    skiResorts[i].longitude,
+                    skiResorts[i].latitude
                 ]
             },
-            images: [
+/*             images: [
                 {
                     url: 'https://res.cloudinary.com/dzq7xz428/image/upload/v1689977214/YelpCamp/xvzwm6ze1h1punfd6xox.jpg',
                     filename: 'YelpCamp/xvzwm6ze1h1punfd6xox'
@@ -56,9 +88,11 @@ const seedDB = async () => {
                     url: 'https://res.cloudinary.com/dzq7xz428/image/upload/v1689977225/YelpCamp/vi2ynjosp7ur1jkc905u.jpg',
                     filename: 'YelpCamp/vi2ynjosp7ur1jkc905u'
                 }              
-            ],
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
-            price
+            ], */
+            images: imagesArray,
+            //description: 'lorem',
+            description: skiResorts[i].description,
+            price: skiResorts[i].price
         })
         await camp.save()
     }

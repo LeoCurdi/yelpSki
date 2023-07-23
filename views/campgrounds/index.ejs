@@ -4,14 +4,15 @@
 <!-- index page cluster map -->
 <div id="cluster-map"></div>
 
-<h1 class="my-3">All Campgrounds</h1>
+<h1 class="my-3">All Ski Resorts</h1>
 
 <!-- <div>
     <a href="/campgrounds/new">Add Campground</a>
 </div> -->
 
 <ul>
-    <% for (let campground of campgrounds) { %>
+    <% const reversedCampgrounds = campgrounds.slice().reverse(); %> <!-- reverse campgrounds array such that most recently added ones appear at top of page -->
+    <% for (let campground of reversedCampgrounds) { %>
         <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
