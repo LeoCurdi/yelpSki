@@ -20,7 +20,7 @@
             <div class="carousel-inner">
                 <% campground.images.forEach((img, i) => {  %>
                     <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
-                        <img crossorigin="anonymous" src="<%= img.url%>" class="d-block w-100" alt="">
+                        <img crossorigin="anonymous" src="<%= img.url%>" class="d-block w-100" style="height: 25vw; object-fit: cover;" alt="">
                     </div>
                 <% }) %>
             </div>
@@ -37,6 +37,7 @@
             <% } %>
         </div>
 
+        <!-- campground info -->
         <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title"><%= campground.title%></h5>
