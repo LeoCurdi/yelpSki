@@ -157,10 +157,10 @@ app.get('/', (req, res) => {
 app.use('/', userRoutes)
 
 // all campground routes come from this router
-app.use('/campgrounds', campgroundRoutes)
+app.use('/resorts', campgroundRoutes)
 
 // all reviews routes come from this router
-app.use('/campgrounds/:id/reviews', reviewRoutes)
+app.use('/resorts/:id/reviews', reviewRoutes)
 
 
 

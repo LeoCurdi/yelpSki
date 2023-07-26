@@ -48,8 +48,8 @@ module.exports.isCampground = async(req, res, next) => {
     const campground = await Campground.findById(id)
     // check if campground exists
     if (!campground) {
-        req.flash('error', 'Cannot find campground')
-        return res.redirect('/campgrounds')
+        req.flash('error', 'Cannot find resort')
+        return res.redirect('/resorts')
     }
     // campground exists
     next()
@@ -63,7 +63,7 @@ module.exports.isAuthor = async(req, res, next) => {
     // check if campground belongs to user
     if (!campground.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that')
-        return res.redirect(`/campgrounds/${id}`)
+        return res.redirect(`/resorts/${id}`)
     }
     // else user has permission to modify
     next()
@@ -90,7 +90,7 @@ module.exports.isReviewAuthor = async(req, res, next) => {
     // check if review belongs to user
     if (!review.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that')
-        return res.redirect(`/campgrounds/${id}`)
+        return res.redirect(`/resorts/${id}`)
     }
     // else user has permission to modify
     next()

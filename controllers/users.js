@@ -17,8 +17,8 @@ module.exports.registerUser = async (req, res) => {
         // log the user in after they register
         req.login(registeredUser, err => {
             if (err) return next(err)
-            req.flash('success', 'Welcome to Yelp Camp')
-            res.redirect('/campgrounds')
+            req.flash('success', 'Welcome to YelpSki')
+            res.redirect('/resorts')
         })
     } catch (e) {
         req.flash('error', e.message)
@@ -33,7 +33,7 @@ module.exports.renderLogin = (req, res) => {
 module.exports.login = (req, res) => {
     req.flash('success', 'welcome back!')
     // we called storeReturnTo and are now able to redirect the user after login
-    const redirectUrl = res.locals.returnTo || '/campgrounds'
+    const redirectUrl = res.locals.returnTo || '/resorts'
     delete req.session.returnTo;
     res.redirect(redirectUrl)
 }
@@ -44,6 +44,6 @@ module.exports.logout = (req, res, next) => {
             return next(err);
         }
         req.flash('success', 'Goodbye!');
-        res.redirect('/campgrounds');
+        res.redirect('/resorts');
     });
 }

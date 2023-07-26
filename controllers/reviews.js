@@ -13,7 +13,7 @@ module.exports.createReview = async (req, res) => {
     // flash a confirmation message
     req.flash('success', 'Created new review!')
 
-    res.redirect(`/campgrounds/${campground._id}`)
+    res.redirect(`/resorts/${campground._id}`)
 }
 
 module.exports.deleteReview = async (req, res) => {
@@ -24,5 +24,5 @@ module.exports.deleteReview = async (req, res) => {
     // flash a confirmation message
     req.flash('success', 'Successfully deleted review!')
 
-    res.redirect(`/campgrounds/${id}`);
+    res.redirect(`/resorts/${id}`);
 }

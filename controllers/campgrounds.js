@@ -35,8 +35,8 @@ module.exports.createCampground = async (req, res) => { // were passing in the v
     await campground.save()    
     console.log(campground)
     // flash a confirmation message
-    req.flash('success', 'Successfully made a new campground!')
-    res.redirect(`/campgrounds/${campground._id}`)
+    req.flash('success', 'Successfully made a new resort!')
+    res.redirect(`/resorts/${campground._id}`)
 }
 
 module.exports.displayCampground = async (req, res) => {
@@ -73,15 +73,18 @@ module.exports.updateCampground = async (req, res) => {
     await campground.save()
     // delete images
     if (req.body.deleteImages) { // check if there are images to delete
-        for (let filename of req.body.deleteImages) {
+        // this will delete the image from cloudinary - so the link to the image will no longer be valid
+        // that means if a image that was used for the seed data is deleted, it will be wiped from all seed campgrounds
+        // it seems like this function isnt actually deleting the images though
+/*         for (let filename of req.body.deleteImages) {
             await cloudinary.uploader.destroy(filename) // delete the images off of my cloudinary account
-        }
+        } */
         await campground.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}}) // pull items out of the images array
     }
     // flash a confirmation message
-    req.flash('success', 'Campground updated!')
+    req.flash('success', 'Resort updated!')
     // redirect user to the campground page
-    res.redirect(`/campgrounds/${campground._id}`)
+    res.redirect(`/resorts/${campground._id}`)
 }
 
 module.exports.deleteCampground = async (req, res) => { // could use any route here besides a get but were going with delete
@@ -94,7 +97,7 @@ module.exports.deleteCampground = async (req, res) => { // could use any route h
     await Campground.findByIdAndDelete(id) // the middleware that is called by findByIdAndDelete is FindOneAndDelete, so we use that middleware inside campground.js to delete all reviews
         
     // flash a confirmation message
-    req.flash('success', 'Successfully deleted campground!')
-    res.redirect('/campgrounds')
+    req.flash('success', 'Successfully deleted resort!')
+    res.redirect('/resorts')
 }
 

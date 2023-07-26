@@ -52,7 +52,7 @@ const CampgroundSchema = new Schema({
 // a virtual schema for adding a 'properties' member to the campground mdoel so after the fact so we can use it on our cluster map
 CampgroundSchema.virtual('properties.popUpMarkup').get(function() {
     return `
-        <strong><a href="/campgrounds/${this._id}">${this.title}<a></strong>
+        <strong><a href="/resorts/${this._id}">${this.title}<a></strong>
         <p>${this.description.substring(0, 20)} . . .</p>
     `
 })
